@@ -1,0 +1,22 @@
+version: "3.8"
+services:
+  mongodb:
+    image: 'mongo'
+    volumes:
+      - data:/data/db
+    env_file:
+      - ./env/mongo.env
+  webapp:
+    build: ./webApp
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./webApp:/app   # in test
+      #- logs:/app/logs  # in production
+    env_file:
+      - ./env/webapp.env
+    depends_on:
+      - mongodb
+volumes:
+  data:
+  #logs:  # in production, with line 15
