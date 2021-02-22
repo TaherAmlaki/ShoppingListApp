@@ -1,6 +1,6 @@
 import bcrypt
 
-from DB.mongodb import db
+from ShoppingListApp.DB.mongodb import db
 
 
 class User(db.Document):

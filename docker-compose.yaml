@@ -7,11 +7,11 @@ services:
     env_file:
       - ./env/mongo.env
   webapp:
-    build: ./webApp
+    build: ./ShoppingListApp
     ports:
       - "5000:5000"
     volumes:
-      - ./webApp:/app   # in test
+      - ./ShoppingListApp:/app/ShoppingListApp   # in test
       #- logs:/app/logs  # in production
     env_file:
       - ./env/webapp.env

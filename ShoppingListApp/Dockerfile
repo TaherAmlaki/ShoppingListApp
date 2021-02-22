@@ -6,9 +6,9 @@ COPY requirements.txt .
 
 RUN pip install -r requirements.txt
 
-COPY . .
+COPY . ./ShoppingListApp
 
 #just for documentation, has no effect
 EXPOSE 5000
 
-CMD [ "python", "app.py" ]
+CMD [ "flask", "run", "--host=0.0.0.0"]

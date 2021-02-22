@@ -1,4 +1,4 @@
-from DB.mongodb import db
+from ShoppingListApp.DB.mongodb import db
 
 
 class Item(db.EmbeddedDocument):

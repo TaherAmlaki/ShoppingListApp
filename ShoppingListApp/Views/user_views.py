@@ -1,10 +1,9 @@
 from flask import (Blueprint, render_template, flash, 
                    redirect, url_for)
 
-from Models.User import User
-
-from Forms.registerForm import RegistrationForm
-from Forms.loginForm import LoginForm
+from ShoppingListApp.Models.User import User
+from ShoppingListApp.Forms.registerForm import RegistrationForm
+from ShoppingListApp.Forms.loginForm import LoginForm
 
 
 user_views = Blueprint("user_views", __name__, url_prefix="/user")
