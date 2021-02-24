@@ -2,7 +2,7 @@ import bcrypt
 from flask_login import UserMixin
 
 from ShoppingListApp.DB.mongodb import db
-from ShoppingListApp.Models.login import login_manager
+from ShoppingListApp.users.login import login_manager
 
 
 @login_manager.user_loader

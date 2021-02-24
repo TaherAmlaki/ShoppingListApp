@@ -2,10 +2,10 @@ from flask import (Blueprint, render_template, flash,
                    redirect, url_for, request)
 from flask_login import login_user, logout_user, current_user, login_required
 
-from ShoppingListApp.Models.User import User
+from ShoppingListApp.users.models import User
 
-from ShoppingListApp.Forms.registerForm import RegistrationForm
-from ShoppingListApp.Forms.loginForm import LoginForm
+from .forms import RegistrationForm
+from .forms import LoginForm
 
 
 user_views = Blueprint("user_views", __name__, url_prefix="/user")
@@ -14,7 +14,7 @@ user_views = Blueprint("user_views", __name__, url_prefix="/user")
 @user_views.route("/register", methods=["POST", "GET"])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for("site.home"))
+        return redirect(url_for("site_views.home"))
 
     form = RegistrationForm()
     if form.validate_on_submit():
@@ -25,14 +25,14 @@ def register():
         user.password = User.hash_password(password)
         user.save()
         flash(f"Account created for '{form.username.data}'.", category="success")
-        return redirect(url_for("site.home"))
+        return redirect(url_for("site_views.home"))
     return render_template("register.html", title="Register", form=form)
 
 
 @user_views.route("/login", methods=["POST", "GET"])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for("site.home"))
+        return redirect(url_for("site_views.home"))
 
     form = LoginForm()
     if form.validate_on_submit():
@@ -47,7 +47,7 @@ def login():
             else:
                 flash("Login successful!", category='success')
                 login_user(user, remember=form.remember.data)
-                next_page = request.args.get('next', url_for("site.home"))
+                next_page = request.args.get('next', url_for("site_views.home"))
                 return redirect(next_page)
     return render_template("login.html", title="Login", form=form)
 
@@ -55,7 +55,7 @@ def login():
 @user_views.route("/logout")
 def logout():
     logout_user()
-    return redirect(url_for("site.home"))
+    return redirect(url_for("site_views.home"))
 
 
 @user_views.route("/account")

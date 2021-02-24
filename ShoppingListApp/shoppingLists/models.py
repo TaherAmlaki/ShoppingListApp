@@ -2,13 +2,18 @@ from datetime import datetime
 from typing import List
 
 from ShoppingListApp.DB.mongodb import db
-from ShoppingListApp.Models.Item import Item
-from ShoppingListApp.Models.User import User
+from ShoppingListApp.users.models import User
 
 
 def datetime_formatted():
     now = datetime.utcnow()
     return now.strftime("%Y-%m-%d %H:%M")
+
+
+class Item(db.EmbeddedDocument):
+    name = db.StringField(required=True, max_length=50)
+    price = db.FloatField(min_value=0.0)
+    shop = db.StringField(max_length=20)
 
 
 class ShoppingList(db.Document):
