@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!--name = db.StringField(required=True, max_length=50)-->
+<!--created = db.DateTimeField(required=True, default=datetime.utcnow)-->
+<!--updated = db.DateTimeField()-->
+<!--status = db.StringField(required=True, default="created", choices=["created", "editing", "closed"])-->
+<!--user = db.ReferenceField(User)-->
+<!--items = db.ListField(db.EmbeddedDocumentField(Item))-->
+
+    {% if the_list %}
+        <div class="container">
+            <div class="card">
+                <div class="card-header">
+                    Created@{{ the_list.created }} -- by {{ the_list.user.username }}
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <span class="text-muted">Shopping List Name:</span> {{ the_list.name }}
+                    </h5>
+                    <p class="card-text">
+                        Status: {{ the_list.status}}
+                        {% if the_list.updated %}
+                        -- <span class="text-muted">Last Updated@{{ the_list.updated }}</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+
+            {% for item in the_list.items %}
+                <div class="card mt-2">
+                    <div class="card-body">
+                        <h5 class="card-title">Item: {{ item.name }}</h5>
+                        <p class="card-text">Price: {{ item.price }} -- Shop: {{ item.shop }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+    {% endif %}
+{% endblock content %}

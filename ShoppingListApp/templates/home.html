@@ -1,4 +1,48 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>Welcome Dude!</h1>
+    {% if current_user.username %}
+        <h3>Welcome {{ current_user.username }}!</h3>
+    {% else %}
+        <h3>Welcome. Please login to see your shopping lists.</h3>
+    {% endif %}
+
+    {% if current_user.is_authenticated %}
+        {% if paginator.items %}
+            <div class="container">
+                {% for shopping_list in paginator.items %}
+                    <article class="media content-section">
+                      <div class="media-body">
+                        <div class="article-metadata">
+                          Status: <a class="mr-2" href="#">{{ shopping_list.status }}</a>
+                          Created@ <small class="text-muted">{{ shopping_list.created.strftime('%Y-%m-%d %H:%M') }}</small>
+                        </div>
+                        <h3>
+                            <a class="article-title" href="{{ url_for('site.detail_shopping_list', list_id=shopping_list.id)}}">
+                                <small class="text-muted">Shopping List Name:</small> {{ shopping_list.name }}
+                            </a>
+                        </h3>
+                      </div>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <h4 class="text-muted">
+                You have no shopping list yet. You can add some
+                <a class="ml-1" href="{{ url_for('site.add_shopping_list', shopping_list_id=shopping_list.id) }}">here</a>.
+            </h4>
+        {% endif %}
+
+        {% for page_num in paginator.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=1) %}
+            {% if page_num %}
+                {% if paginator.page == page_num%}
+                    <a class="btn btn-info mb-2" href="{{ url_for('site.home', page=page_num) }}">{{ page_num }}</a>
+                {% else %}
+                    <a class="btn btn-outline-info mb-2" href="{{ url_for('site.home', page=page_num) }}">{{ page_num }}</a>
+                {% endif %}
+            {% else %}
+                ...
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
 {% endblock content %}
