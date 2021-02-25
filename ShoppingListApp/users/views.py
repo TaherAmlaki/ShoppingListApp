@@ -4,8 +4,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 
 from ShoppingListApp.users.models import User
 
-from .forms import RegistrationForm
-from .forms import LoginForm
+from .forms import RegistrationForm, LoginForm, ResetPasswordForm
 
 
 user_views = Blueprint("user_views", __name__, url_prefix="/user")
@@ -62,3 +61,16 @@ def logout():
 @login_required
 def account():
     return render_template("account.html", title="Account")
+
+
+@user_views.route("/reset_password", methods=["POST", "GET"])
+@login_required
+def reset_password():
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        user = User.find_by_id(current_user.get_id())
+        user.password = User.hash_password(form.password.data)
+        user.save()
+        flash(f"New password is set for '{user.username}'.", category="success")
+        return redirect(url_for("site_views.home"))
+    return render_template("reset_password.html", title="Reset Your Password", form=form)

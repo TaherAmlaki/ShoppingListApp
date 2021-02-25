@@ -23,3 +23,9 @@ class LoginForm(FlaskForm):
     password = PasswordField("Password", validators=[DataRequired(), Length(min=4, max=50)])
     remember = BooleanField("Remember Me")
     submit = SubmitField("Sign In")
+
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField("Password", validators=[DataRequired(), Length(min=4, max=50)])
+    confirm_password = PasswordField("Confirm Password", validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField("Save New Password")
