@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+    <h3>{{ current_user.username }}</h3>
+
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">The requested page does not exists.</h5>
+        <a href="{{ url_for('user_views.login') }}" class="btn btn-primary">Login</a>
+      </div>
+    </div>
+
+    <div class="border-top pt-3">
+        <small class="text-muted">
+            Don't Have An Account Yet?
+            <a href="{{ url_for('user_views.register') }}" class="ml-2">
+                Sign Up!
+            </a>
+        </small>
+    </div>
+
+{% endblock content %}

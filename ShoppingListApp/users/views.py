@@ -7,7 +7,10 @@ from ShoppingListApp.users.models import User
 from .forms import RegistrationForm, LoginForm, ResetPasswordForm
 
 
-user_views = Blueprint("user_views", __name__, url_prefix="/user")
+user_views = Blueprint("user_views",
+                       __name__,
+                       url_prefix="/user",
+                       template_folder='templates')
 
 
 @user_views.route("/register", methods=["POST", "GET"])
@@ -25,7 +28,7 @@ def register():
         user.save()
         flash(f"Account created for '{form.username.data}'.", category="success")
         return redirect(url_for("site_views.home"))
-    return render_template("register.html", title="Register", form=form)
+    return render_template("users/register.html", title="Register", form=form)
 
 
 @user_views.route("/login", methods=["POST", "GET"])
@@ -48,7 +51,7 @@ def login():
                 login_user(user, remember=form.remember.data)
                 next_page = request.args.get('next', url_for("site_views.home"))
                 return redirect(next_page)
-    return render_template("login.html", title="Login", form=form)
+    return render_template("users/login.html", title="Login", form=form)
 
 
 @user_views.route("/logout")
@@ -60,7 +63,7 @@ def logout():
 @user_views.route("/account")
 @login_required
 def account():
-    return render_template("account.html", title="Account")
+    return render_template("users/account.html", title="Account")
 
 
 @user_views.route("/reset_password", methods=["POST", "GET"])
@@ -73,4 +76,10 @@ def reset_password():
         user.save()
         flash(f"New password is set for '{user.username}'.", category="success")
         return redirect(url_for("site_views.home"))
-    return render_template("reset_password.html", title="Reset Your Password", form=form)
+    return render_template("users/reset_password.html", title="Reset Your Password", form=form)
+
+
+@user_views.errorhandler(404)
+def page_not_found(e):
+    return render_template('users/404.html')
+    

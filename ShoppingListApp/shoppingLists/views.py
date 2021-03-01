@@ -8,7 +8,10 @@ from .forms import ShoppingList, AddShoppingListForm
 from ShoppingListApp.users.models import User
 
 
-shopping_list_views = Blueprint("shopping_list_views", __name__, url_prefix="/shopping_list")
+shopping_list_views = Blueprint("shopping_list_views", 
+                                __name__, 
+                                url_prefix="/shopping_list", 
+                                template_folder='templates')
 
 
 @shopping_list_views.route("/new", methods=["POST", "GET"])
@@ -33,7 +36,7 @@ def add_shopping_list():
         list_obj.save()
         flash("New shopping list is saved.", 'info')
         return redirect(url_for("site.home"))
-    return render_template("add_shopping_list.html", title="Add Shopping List", form=form)
+    return render_template("shoppingLists/add_shopping_list.html", title="Add Shopping List", form=form)
 
 
 @shopping_list_views.route("/details/<list_id>")
@@ -44,4 +47,4 @@ def detail_shopping_list(list_id):
         the_list.created = datetime.strftime(the_list.created, "%Y-%m-%d %H:%M")
         if the_list.updated:
             the_list.updated = datetime.strftime(the_list.updated, "%Y-%m-%d %H:%M")
-    return render_template("detail_shopping_list.html", title="Detail Shopping List", the_list=the_list)
+    return render_template("shoppingLists/detail_shopping_list.html", title="Detail Shopping List", the_list=the_list)

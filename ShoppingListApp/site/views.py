@@ -3,8 +3,9 @@ from flask_login import current_user
 
 from ShoppingListApp.shoppingLists.forms import ShoppingList
 
-
-site_views = Blueprint("site_views", __name__)
+site_views = Blueprint("site_views",
+                       __name__,
+                       template_folder='templates')
 
 
 @site_views.route("/")
