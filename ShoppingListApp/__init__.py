@@ -1,7 +1,5 @@
 from flask import Flask
 
-from ShoppingListApp.DB.mongodb import db
-from ShoppingListApp.users.login import login_manager
 from ShoppingListApp.configs import Config
 
 
@@ -10,6 +8,8 @@ def create_app(config_class=Config):
 
     app.config.from_object(config_class)
 
+    from ShoppingListApp.DB.mongodb import db
+    from ShoppingListApp.users.login import login_manager
     db.init_app(app)
     login_manager.init_app(app)
 

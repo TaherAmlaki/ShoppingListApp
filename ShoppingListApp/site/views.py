@@ -15,4 +15,4 @@ def home():
     if current_user.is_authenticated:
         page_number = request.args.get('page', 1, type=int)
         paginator = ShoppingList.get_paginator(current_user.get_id(), page_number)
-    return render_template("home.html", title="Home Page", paginator=paginator)
+    return render_template("site/home.html", title="Home Page", paginator=paginator)
