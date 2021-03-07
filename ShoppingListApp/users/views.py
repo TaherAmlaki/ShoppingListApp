@@ -20,11 +20,9 @@ def register():
 
     form = RegistrationForm()
     if form.validate_on_submit():
-        username = form.username.data 
-        password = form.password.data
         user = User()
-        user.username = username
-        user.password = User.hash_password(password)
+        user.username = form.username.data 
+        user.password = User.hash_password(form.password.data)
         user.save()
         flash(f"Account created for '{form.username.data}'.", category="success")
         return redirect(url_for("site_views.home"))

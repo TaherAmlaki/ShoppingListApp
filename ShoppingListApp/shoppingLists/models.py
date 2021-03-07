@@ -48,3 +48,6 @@ class ShoppingList(db.Document):
 
     def __repr__(self):
         return f"ShoppingList(id={self.id}, name={self.name}, created={self.created},status={self.status})"
+
+    def get_items(self):
+        return [repr(item) for item in self.items]

@@ -5,8 +5,8 @@ from wtforms.validators import DataRequired, Length, Optional, ValidationError
 from .models import ShoppingList
 
 
-class AddItemForm(Form):
-    name = StringField("Item Name", validators=[DataRequired(), Length(min=1, max=50)])
+class AddItemForm(FlaskForm):
+    item_name = StringField("Item Name", validators=[DataRequired(), Length(min=1, max=50)])
     price = DecimalField("Price", validators=[Optional()])
     shop = StringField("Shop Name", validators=[Optional(), Length(max=20)])
 

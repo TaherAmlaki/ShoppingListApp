@@ -17,7 +17,7 @@
                           Created@ <small class="text-muted">{{ shopping_list.created.strftime('%Y-%m-%d %H:%M') }}</small>
                         </div>
                         <h3>
-                            <a class="article-title" href="{{ url_for('site_views.detail_shopping_list', list_id=shopping_list.id)}}">
+                            <a class="article-title" href="{{ url_for('shopping_list_views.detail_shopping_list', list_id=shopping_list.id)}}">
                                 <small class="text-muted">Shopping List Name:</small> {{ shopping_list.name }}
                             </a>
                         </h3>

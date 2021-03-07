@@ -30,4 +30,14 @@ class User(db.Document, UserMixin):
         return bcrypt.checkpw(password.encode('utf-8'), self.password.encode("utf-8"))
 
     def __repr__(self):
-        return f"User(username={self.username})"
+        return f"User(username={self.username}, id={self.id})"
+
+    def __eq__(self, other):
+        try:
+            return self.id == other.id 
+        except AttributeError:
+            return False 
+
+    def __hash__(self):
+        return hash(self.id)
+         
