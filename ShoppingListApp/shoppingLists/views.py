@@ -1,14 +1,14 @@
 from datetime import datetime
-import urllib.parse as urlparse
-from urllib.parse import parse_qs
 
 from flask import Blueprint, render_template, redirect, flash, url_for, abort, request, jsonify, session
 from flask_login import current_user, login_required
 from wtforms import FieldList, FormField
+from flask_restful import Api
 
 from .models import Item
 from .forms import ShoppingList, AddShoppingListForm, AddItemForm
 from .helpers import load_previous_data_to_add_shopping_list
+from .resources import ModifyShoppingListResource
 from ShoppingListApp.users.models import User
 
 
@@ -16,6 +16,9 @@ shopping_list_views = Blueprint("shopping_list_views",
                                 __name__, 
                                 url_prefix="/shopping_list", 
                                 template_folder='templates')
+
+shopping_list_api = Api(shopping_list_views)
+shopping_list_api.add_resource(ModifyShoppingListResource, "/modify_add_shopping_list")
 
 
 @shopping_list_views.route("/add", methods=["POST", "GET"])
@@ -72,22 +75,3 @@ def delete_shopping_list(list_id):
     the_list.delete()
     flash(f"Deleted '{the_list.name}' successfully.", "info")
     return redirect(url_for("site_views.home"))
-
-
-@shopping_list_views.route("/modify_add_shopping_list", methods=["POST"])
-def modify_add_shopping_list():
-    action = request.json["action"]
-    url = request.json["url"]
-    form_data = request.json["form"]
-    item_index = request.json.get("itemIndex", None)
-    parsed = urlparse.urlparse(url)
-    if action == "add":
-        items = int(parse_qs(parsed.query).get('items', [0])[0]) + 1
-    elif action == "remove":
-        items = max(int(parse_qs(parsed.query).get('items', [0])[0]) - 1, 0)
-    else:
-        items = int(parse_qs(parsed.query).get('items', [0])[0])
-    form_data['action'] = action
-    form_data['itemIndex'] = item_index
-    session["AddShoppingListData"] = form_data
-    return jsonify({"url": url_for("shopping_list_views.add_shopping_list", items=items)})
