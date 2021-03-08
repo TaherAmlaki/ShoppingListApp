@@ -5,15 +5,15 @@ from wtforms.validators import DataRequired, Length, Optional, ValidationError
 from .models import ShoppingList
 
 
-class AddItemForm(FlaskForm):
+class AddItemForm(Form):
     item_name = StringField("Item Name", validators=[DataRequired(), Length(min=1, max=50)])
     price = DecimalField("Price", validators=[Optional()])
     shop = StringField("Shop Name", validators=[Optional(), Length(max=20)])
 
 
 class AddShoppingListForm(FlaskForm):
-    name = StringField("name", validators=[DataRequired(), Length(min=1, max=50)])
-    items = FieldList(FormField(AddItemForm), min_entries=1)
+    name = StringField("Shopping List Name", validators=[DataRequired(), Length(min=1, max=50)])
+    items = FieldList(FormField(AddItemForm), min_entries=0, max_entries=10)
     submit = SubmitField("Save")
 
     def validate_name(self, name):

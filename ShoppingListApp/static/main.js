@@ -1,10 +1,28 @@
+function ConvertFormToJSON(form){
+    var array = $(form).serializeArray();
+    var json = {};
+    
+    $.each(array, function() {
+        json[this.name] = this.value || '';
+    });
+    
+    return json;
+}
+
+
 $(document).ready(function() {
     $("#addNewField").click(function() {
-        console.log("---> in button click")
-        var newInput = $("<input required type='text' value=''></input>")
-            .attr("id", "newInput")
-            .attr("name", "newInput")
-        var item = $("<h1>new Item</h1>");
-        $("#Shopping-list-class").append(item);
-    })
+        $.ajax({
+            url: $SCRIPT_ROOT + "/shopping_list/modify_add_shopping_list",
+            data: JSON.stringify({action: "add", url: window.location.href, form: ConvertFormToJSON("#addShoppingListForm")}),
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function(result){
+                console.log(result);
+                console.log(result.url);
+                window.location = result.url;
+            }
+        });
+    });
 });
+

@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
+
     <div class="content-section">
-        <form action="" method="POST">
+        <form action="" method="POST" id="addShoppingListForm">
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">
@@ -26,7 +27,14 @@
                     {% for item in form.items %}
                         <div class="form-group">
                             {{ item }}
+                            <button class="btn btn-outline-danger" type="button" id="removeItem{{ item.id }}">Delete</button>
+                            <div class="invalid-feedback">
+                                {% for error in item.item_name.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
                         </div>
+                        <hr>
                     {% endfor %}
                 </div>
                 <button type="button" id="addNewField">Add A New Item</button>
