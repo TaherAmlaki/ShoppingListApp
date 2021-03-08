@@ -1,5 +1,4 @@
 from datetime import datetime
-import json 
 import urllib.parse as urlparse
 from urllib.parse import parse_qs
 
@@ -81,6 +80,9 @@ def modify_add_shopping_list():
     url = request.json["url"]
     form_data = request.json["form"]
     parsed = urlparse.urlparse(url)
-    items = int(parse_qs(parsed.query).get('items', [0])[0]) + 1
+    if action == "add":
+        items = int(parse_qs(parsed.query).get('items', [0])[0]) + 1
+    else:
+        items = max(int(parse_qs(parsed.query).get('items', [0])[0]) - 1, 0)
     session["AddShoppingListData"] = form_data
     return jsonify({"url": url_for("shopping_list_views.add_shopping_list", items=items)})
