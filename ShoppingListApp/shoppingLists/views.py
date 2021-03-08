@@ -79,10 +79,15 @@ def modify_add_shopping_list():
     action = request.json["action"]
     url = request.json["url"]
     form_data = request.json["form"]
+    item_index = request.json.get("itemIndex", None)
     parsed = urlparse.urlparse(url)
     if action == "add":
         items = int(parse_qs(parsed.query).get('items', [0])[0]) + 1
-    else:
+    elif action == "remove":
         items = max(int(parse_qs(parsed.query).get('items', [0])[0]) - 1, 0)
+    else:
+        items = int(parse_qs(parsed.query).get('items', [0])[0])
+    form_data['action'] = action
+    form_data['itemIndex'] = item_index
     session["AddShoppingListData"] = form_data
     return jsonify({"url": url_for("shopping_list_views.add_shopping_list", items=items)})

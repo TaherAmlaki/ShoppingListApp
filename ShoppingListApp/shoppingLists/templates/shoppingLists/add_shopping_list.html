@@ -27,7 +27,7 @@
                     {% for item in form.items %}
                         <div class="form-group">
                             {{ item }}
-                            <button class="btn btn-outline-danger" type="button" id="removeItem{{ item.id }}">Delete</button>
+                            <button class="btn btn-outline-danger" type="button" id="removeItem-{{ item.id }}">Delete</button>
                             <div class="invalid-feedback">
                                 {% for error in item.item_name.errors %}
                                     <span>{{ error }}</span>
