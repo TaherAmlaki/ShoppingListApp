@@ -3,6 +3,8 @@ from flask import session, url_for
 import urllib.parse as urlparse
 from urllib.parse import parse_qs
 
+from .basketModel import BasektModel
+
 
 help_msg = "Modifying shopping list without '{}' is not possible."
 
@@ -30,3 +32,14 @@ class ModifyShoppingListResource(Resource):
         form_data['itemIndex'] = item_index
         session["AddShoppingListData"] = form_data
         return {"url": url_for("shopping_list_views.add_shopping_list", items=items)}
+
+
+class ProcessShoppingListsResource(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('user_id', type=str, required=True, help="user_id is required.")
+
+    @classmethod
+    def get(cls, user_id):
+        basket_model = BasektModel(user_id)
+        res = basket_model.process()
+        return {"result": res}

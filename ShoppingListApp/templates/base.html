@@ -59,11 +59,13 @@
         </div>
         <div class="col-md-4">
           <div class="content-section">
-            <!-- <h3>Our Predictions</h3> -->
             <p class='text-muted'>Your Shopping List Data.
               <ul class="list-group">
                 <li class="list-group-item list-group-item-light">Mostly bought items</li>
                 <li class="list-group-item list-group-item-light">My Next Shopping List Prediction</li>
+                <li class="list-group-item list-group-item-light">
+                  <button class="btn btn-outline-info" id="GetDataBtn-{{ current_user.get_id() }}">Get Data</button>
+                </li>
               </ul>
             </p>
           </div>

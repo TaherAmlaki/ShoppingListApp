@@ -8,7 +8,7 @@ from flask_restful import Api
 from .models import Item
 from .forms import ShoppingList, AddShoppingListForm, AddItemForm
 from .helpers import load_previous_data_to_add_shopping_list
-from .resources import ModifyShoppingListResource
+from .resources import ModifyShoppingListResource, ProcessShoppingListsResource
 from ShoppingListApp.users.models import User
 
 
@@ -19,6 +19,7 @@ shopping_list_views = Blueprint("shopping_list_views",
 
 shopping_list_api = Api(shopping_list_views)
 shopping_list_api.add_resource(ModifyShoppingListResource, "/modify_add_shopping_list")
+shopping_list_api.add_resource(ProcessShoppingListsResource, "/process_shopping_lists/<string:user_id>")
 
 
 @shopping_list_views.route("/add", methods=["POST", "GET"])
@@ -45,6 +46,7 @@ def add_shopping_list():
             items.append(item_obj)
         list_obj.items = items
         list_obj.save()
+
         flash("New shopping list is saved.", 'info')
         return redirect(url_for("site_views.home"))
     return render_template("shoppingLists/add_shopping_list.html", title="Add Shopping List", form=form)

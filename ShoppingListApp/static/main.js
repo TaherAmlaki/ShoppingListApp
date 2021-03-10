@@ -44,5 +44,17 @@ $(document).ready(function() {
             }
         });
     });
+
+    $('[id*=GetDataBtn-]').click(function(){
+        var userID = $(this).attr('id').replace('GetDataBtn-','');
+        $.ajax({
+            url: $SCRIPT_ROOT + "/shopping_list/process_shopping_lists/" + userID,
+            userID: userID,
+            type: "GET",
+            success: function(result){
+                console.log(result);
+            }
+        });
+    });
 });
 

@@ -15,6 +15,13 @@ class Item(db.EmbeddedDocument):
     price = db.FloatField(min_value=0.0)
     shop = db.StringField(max_length=20)
 
+    def to_dict(self):
+        return {
+            "name": self.name,
+            "price": self.price,
+            "shop": self.shop
+        }
+
 
 class ShoppingList(db.Document):
     name = db.StringField(required=True, max_length=50)
@@ -47,7 +54,7 @@ class ShoppingList(db.Document):
         return cls.objects(user=user).order_by('-updated', '-created').paginate(page=page_number, per_page=5)
 
     def __repr__(self):
-        return f"ShoppingList(id={self.id}, name={self.name}, created={self.created},status={self.status})"
+        return f"ShoppingList(id={self.id}, name={self.name}, created={self.created}, status={self.status})"
 
     def get_items(self):
-        return [repr(item) for item in self.items]
+        return [item.to_dict() for item in self.items]
