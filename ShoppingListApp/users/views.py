@@ -64,7 +64,7 @@ def account():
     return render_template("users/account.html", title="Account")
 
 
-@user_views.route("/reset_password", methods=["POST", "GET"])
+@user_views.route("/reset-password", methods=["POST", "GET"])
 @login_required
 def reset_password():
     form = ResetPasswordForm()

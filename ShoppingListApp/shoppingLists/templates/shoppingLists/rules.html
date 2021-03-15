@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+    {% if rules %}
+        <div class="container">
+            <table class="table table-dark">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Antecedents</th>
+                    <th scope="col">Consequents</th>
+                    <th scope="col">Confidence</th>
+                    <th scope="col">Lift</th>
+                    <th scope="col">Leverage</th>
+                    <th scope="col">Conviction</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for rule in rules %}
+                    <tr>
+                        <th scope="row">{{ loop.index }}</th>
+                        <td>{{ rule.antecedents }}</td>
+                        <td>{{ rule.consequents }}</td>
+                        <td>{{ rule.confidence }}</td>
+                        <td>{{ rule.lift }}</td>
+                        <td>{{ rule.leverage }}</td>
+                        <td>{{ rule.conviction }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+
+{% endblock content %}

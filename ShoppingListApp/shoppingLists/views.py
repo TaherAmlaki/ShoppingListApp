@@ -8,18 +8,17 @@ from flask_restful import Api
 from .models import Item
 from .forms import ShoppingList, AddShoppingListForm, AddItemForm
 from .helpers import load_previous_data_to_add_shopping_list
-from .resources import ModifyShoppingListResource, ProcessShoppingListsResource
+from .resources import ModifyShoppingListResource, basket_market_object
 from ShoppingListApp.users.models import User
 
 
 shopping_list_views = Blueprint("shopping_list_views", 
                                 __name__, 
-                                url_prefix="/shopping_list", 
+                                url_prefix="/shopping-lists", 
                                 template_folder='templates')
 
 shopping_list_api = Api(shopping_list_views)
 shopping_list_api.add_resource(ModifyShoppingListResource, "/modify_add_shopping_list")
-shopping_list_api.add_resource(ProcessShoppingListsResource, "/process_shopping_lists/<string:user_id>")
 
 
 @shopping_list_views.route("/add", methods=["POST", "GET"])
@@ -46,6 +45,10 @@ def add_shopping_list():
             items.append(item_obj)
         list_obj.items = items
         list_obj.save()
+
+        basket_market_object.reset()
+        basket_market_object.set_user_id(current_user.get_id())
+        basket_market_object.process()
 
         flash("New shopping list is saved.", 'info')
         return redirect(url_for("site_views.home"))
@@ -75,5 +78,34 @@ def delete_shopping_list(list_id):
         abort(403)
 
     the_list.delete()
+    
+    basket_market_object.reset()
+    basket_market_object.set_user_id(current_user.get_id())
+    basket_market_object.process()
+
     flash(f"Deleted '{the_list.name}' successfully.", "info")
     return redirect(url_for("site_views.home"))
+
+
+@shopping_list_views.route("/frequent-itemsets")
+@login_required
+def get_frequent_item_sets():
+    if not current_user.is_authenticated:
+        abort(401)
+    
+    freq_item_sets = basket_market_object.frequent_item_sets
+    return render_template("shoppingLists/frequent_item_sets.html", 
+                           title="Frequently Bought Items", 
+                           freq_item_sets=freq_item_sets)
+
+
+@shopping_list_views.route("/patterns")
+@login_required
+def get_rules():
+    if not current_user.is_authenticated:
+        abort(401)
+    
+    rules = basket_market_object.rules
+    return render_template("shoppingLists/rules.html", 
+                           title="Shopping List Patterns", 
+                           rules=rules)

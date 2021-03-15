@@ -44,7 +44,7 @@ class ShoppingList(db.Document):
         return cls.objects(status=status).order_by('-updated', '-created')
 
     @classmethod
-    def find_by_user_id(cls, user_id) -> "ShoppingList":
+    def find_by_user_id(cls, user_id) -> List["ShoppingList"]:
         user = User.find_by_id(user_id)
         return cls.objects(user=user).order_by('-updated', '-created')
 

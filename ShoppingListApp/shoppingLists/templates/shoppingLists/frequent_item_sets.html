@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+    {% if freq_item_sets %}
+        <div class="container">
+            <table class="table table-dark">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Item</th>
+                    <th scope="col">Support</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for itemset in freq_item_sets %}
+                    <tr>
+                        <th scope="row">{{ loop.index }}</th>
+                        <td>{{ itemset.itemsets }}</td>
+                        <td>{{ itemset.support }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+
+{% endblock content %}
