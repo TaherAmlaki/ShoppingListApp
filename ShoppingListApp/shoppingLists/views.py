@@ -92,7 +92,9 @@ def delete_shopping_list(list_id):
 def get_frequent_item_sets():
     if not current_user.is_authenticated:
         abort(401)
-    
+    if current_user.get_id() != basket_market_object.user_id:
+        basket_market_object.reset_and_process(current_user.get_id())
+
     freq_item_sets = basket_market_object.frequent_item_sets
     return render_template("shoppingLists/frequent_item_sets.html", 
                            title="Frequently Bought Items", 
@@ -104,7 +106,9 @@ def get_frequent_item_sets():
 def get_rules():
     if not current_user.is_authenticated:
         abort(401)
-    
+    if current_user.get_id() != basket_market_object.user_id:
+        basket_market_object.reset_and_process(current_user.get_id())
+
     rules = basket_market_object.rules
     return render_template("shoppingLists/rules.html", 
                            title="Shopping List Patterns", 
