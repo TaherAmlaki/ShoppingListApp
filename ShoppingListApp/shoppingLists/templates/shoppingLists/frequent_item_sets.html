@@ -6,7 +6,7 @@
                 <thead>
                   <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Item</th>
+                    <th scope="col">Item-Set</th>
                     <th scope="col">Support</th>
                   </tr>
                 </thead>
@@ -20,6 +20,31 @@
                     {% endfor %}
                 </tbody>
             </table>
+
+            <div class="card w-100">
+                <div class="card-body">
+                    <h5 class="card-title">Support?</h5>
+                    <p class="card-text">
+                        Support is percentage of shopping lists that contain the item-set to the total number of
+                        shopping lists.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    {% else %}
+        <div class="container">
+            <div class="card w-100">
+                <div class="card-body">
+                    <h5 class="card-title">No Item-Sets Available Yet</h5>
+                    <p class="card-text">
+                        There is no item in your shopping lists yet and therefore no information about items is available.
+                    </p>
+                    <a href="{{ url_for('shopping_list_views.add_shopping_list') }}" class="btn btn-primary">
+                        Add A New Shopping List
+                    </a>
+                </div>
+            </div>
         </div>
     {% endif %}
 
